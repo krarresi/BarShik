@@ -1,3 +1,9 @@
+<?php
+require_once "connect.php";
+$show = mysqli_query($connect, "SELECT * FROM `Product` inner join Category on Product.Category_id = Category.Category_id");
+$show_elements = mysqli_fetch_all($show);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/product-panel_style.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +25,7 @@
 
     <header>
        <nav class="nav-links">
-            <a href="#" class="header-link">Main page</a>
+            <a href="index.html" class="header-link">Main page</a>
             <a href="" class="header-link">Contacts</a>
             <a href="sign-in.php" class="header-link">Sign in</a>
             <a href="sign-up.php" class="header-link">Sign up</a>
@@ -25,67 +33,45 @@
                 <img src="images/cart.png" alt="Cart">
                 <p class="nav-text">Cart</p>
             </a>
-       </nav> 
-       <div class="header-main-block">
-            <h1 class="header-title">ENJOY EVERY SIP</h1>
-            <p class="header-desc">The ultimate refreshing drink to enjoy in every festival</p>
-            <button class="header-btn">Buy Now</button>
-       </div>
-       
+       </nav>
+       <div class="control-panel">
+            <div class="find-block"></div>
+            <div class="filter-block"></div>
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Editing</th>
+                    <th>Delete</th>
+                </tr>
+                <?php
+                foreach($show_elements as $element):?>
+              <form action="update.php">
+                <tr>
+                    <td><input name="id" type="text" value="<?=$element[0]?>" readonly></td>
+                    <td><input name="name" type="text" value="<?=$element[1]?>" readonly></td>
+                    <td><input name="category" type="text" value="<?=$element[3]?>" readonly></td>
+                    <td><input name="price" type="text" value="<?=$element[4]?>" readonly></td>
+                    <td><input name="desc" type="text" value="<?=$element[2]?>" readonly></td>
+                    <td>
+                        <a href="update.php?" class="table-link">
+                            <img src="images/update.png" alt="">
+                        </a>
+                    </td>
+                    </form>
+                    <td>
+                        <a href="delete.php?id=<?=$element[0]?>" class="table-link">
+                            <img src="images/delete.png" alt="">
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+            </table>
+        </div>    
     </header>
-
-    <main>
-        <section class="products-section">
-
-        </section>
-        <div class="categories-block">
-            <div class="category">
-                <img src="images/cat-1.png" alt="Изображение категории" class="category-img">
-                <p class="category-name">Energy Drink</p>
-            </div>
-            <div class="category">
-                <img src="images/cat-2.png" alt="Изображение категории" class="category-img">
-                <p class="category-name">Juice</p>
-            </div>
-            <div class="category">
-                <img src="images/cat-3.png" alt="Изображение категории" class="category-img">
-                <p class="category-name">Water</p>
-            </div>
-        </div>
-        <div class="dropdown"></div>
-        <div class="dropdown"></div>
-        <hr>
-        <div class="catalog">
-            <div class="card">
-                <img src="images/product-1.png" alt="Изображение товара" class="card-img">
-                <h3 class="card-subtitle">All new</h3>
-                <h2 class="card-title">Cool Berry</h2>
-                <div class="buy-block">
-                    <p class="card-price">200 ₽</p>
-                    <img src="images/cart.png" alt="корзина" class="add-to-card-img">
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/product-2.png" alt="Изображение товара" class="card-img">
-                <h3 class="card-subtitle">All new</h3>
-                <h2 class="card-title">Chill Cherry</h2>
-                <div class="buy-block">
-                    <p class="card-price">150 ₽</p>
-                    <img src="images/cart.png" alt="корзина" class="add-to-card-img">
-                </div>
-            </div>
-            <div class="card">
-                <img src="images/product-3.png" alt="Изображение товара" class="card-img">
-                <h3 class="card-subtitle">All new</h3>
-                <h2 class="card-title">Orange Zest</h2>
-                <div class="buy-block">
-                    <p class="card-price">300 ₽</p>
-                    <img src="images/cart.png" alt="корзина" class="add-to-card-img">
-                </div>
-            </div>
-        </div>
-        <hr>
-    </main>
 
     <footer>
         <div class="footer-main">
